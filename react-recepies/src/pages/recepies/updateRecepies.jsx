@@ -33,7 +33,7 @@ export default function UpdateRecepies() {
     fetchRecepies();
   }, [fetchRecepies]);
 
-  // 🔹 Tangani perubahan input
+
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setForm({
@@ -42,7 +42,7 @@ export default function UpdateRecepies() {
     });
   };
 
-  // 🔹 Simpan perubahan resep (UPDATE)
+
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -50,11 +50,11 @@ export default function UpdateRecepies() {
       const response = await http.put(`/recepies/${params.id}`, form);
       if (response.status === 200) {
         alert("✅ Resep berhasil diperbarui!");
-        navigate("/", { replace: true });
+
+        navigate("/"); 
       }
     } catch (error) {
       console.error("Gagal update resep:", error);
-      alert("❌ Gagal memperbarui resep!");
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +70,7 @@ export default function UpdateRecepies() {
       const response = await http.delete(`/recepies/${params.id}`);
       if (response.status === 200) {
         alert("🗑️ Resep berhasil dihapus!");
-        navigate("/", { replace: true });
+        navigate("/"); // atau navigate(-1) untuk kembali ke halaman sebelumnya
       }
     } catch (error) {
       console.error("Gagal menghapus resep:", error);
@@ -120,23 +120,14 @@ export default function UpdateRecepies() {
           placeholder="Masukkan waktu memasak"
         />
 
-        {/* 🔹 Tombol Aksi */}
         <div className="flex gap-3 pt-4">
           <Button
             type="submit"
+            onClick={() => navigate("/")}
             disabled={isLoading}
             className="bg-blue-600 hover:bg-blue-700"
           >
             {isLoading ? "Menyimpan..." : "💾 Simpan Perubahan"}
-          </Button>
-
-          <Button
-            type="button"
-            onClick={handleDelete}
-            disabled={isLoading}
-            className="bg-red-600 hover:bg-red-700"
-          >
-            {isLoading ? "Menghapus..." : "🗑️ Hapus Resep"}
           </Button>
         </div>
       </form>
